@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walkabout Wunderland Race - Final Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           THEME VARIABLES (Light & Dark)
+           ========================================= */
+        :root {
+            /* --- LIGHT THEME (Glass Style) --- */
+            --bg-body: linear-gradient(to bottom, #87CEEB 0%, #a0e6a0 100%);
+            --text-main: #333;
+            --text-shadow-credit: 0 1px 1px rgba(255,255,255,0.5);
+            
+            /* Header */
+            --header-bg: rgba(255, 255, 255, 0.25);
+            --header-border: 1px solid rgba(255,255,255,0.6);
+            --header-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+            /* Title */
+            --title-color: #FFD700;
+            --title-shadow: -2px -2px 0 #c65d05, 2px -2px 0 #c65d05, -2px 2px 0 #c65d05, 2px 2px 0 #c65d05, 0 5px 10px rgba(0,0,0,0.2);
+
+            /* --- HIGH QUALITY TRACK --- */
+            --track-bg-color: rgba(58, 58, 58, 0.65);
+            --track-texture: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.4) 2px, rgba(0,0,0,0.4) 4px), radial-gradient(rgba(74,74,74,0.5) 15%, transparent 16%) 0 0, radial-gradient(rgba(74,74,74,0.5) 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+            --track-border-color: rgba(255,255,255,0.8);
+            --curb-pattern: repeating-linear-gradient(90deg, rgba(204, 0, 0, 0.9), rgba(204, 0, 0, 0.9) 20px, rgba(238, 238, 238, 0.9) 20px, rgba(238, 238, 238, 0.9) 40px);
+            --lane-line: 2px dashed rgba(255, 255, 255, 0.5);
+            --finish-line-pattern: repeating-conic-gradient(#fff 0% 25%, #000 25% 50%) 50% / 20px 20px;
+            --track-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 60px rgba(0,0,0,0.2);
+            
+            /* Menu & Overlays */
+            --overlay-bg: rgba(255, 255, 255, 0.95);
+            --overlay-border: 4px solid #fff;
+            --overlay-text: #333;
+            --input-border: 2px solid #87CEEB;
+            --list-bg: rgba(240,240,240,0.8);
+
+            /* Buttons */
+            --btn-start-bg: linear-gradient(to bottom, #43e97b, #38f9d7);
+            --btn-start-text: #fff;
+            --btn-stop-bg: linear-gradient(to bottom, #ff0844, #ffb199);
+            --btn-tourn-bg: linear-gradient(to bottom, #f09819, #edde5d);
+            --btn-settings-bg: linear-gradient(to bottom, #7f8c8d, #95a5a6);
+            --btn-sounds-bg: linear-gradient(to bottom, #4facfe, #00f2fe);
+            --btn-delete-bg: #ff4757;
+            --btn-manage-bg: linear-gradient(to bottom, #a8ff78, #78ffd6);
+        }
+
+        [data-theme="dark"] {
+            /* --- DARK THEME --- */
+            --bg-body: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --text-main: #fff;
+            --text-shadow-credit: 0 1px 2px rgba(0,0,0,0.8);
+            --header-bg: rgba(0, 0, 0, 0.4);
+            --header-border: 1px solid rgba(0, 210, 255, 0.3);
+            --header-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            --title-color: #fff;
+            --title-shadow: 0 0 10px #00d2ff, 0 0 20px #d600ff;
+            --track-bg-color: rgba(5, 5, 16, 0.6);
+            --track-texture: linear-gradient(rgba(0, 210, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 210, 255, 0.1) 1px, transparent 1px);
+            --track-border-color: rgba(0, 210, 255, 0.8);
+            --curb-pattern: repeating-linear-gradient(90deg, rgba(214, 0, 255, 0.9), rgba(214, 0, 255, 0.9) 20px, rgba(0, 210, 255, 0.9) 20px, rgba(0, 210, 255, 0.9) 40px);
+            --lane-line: 1px solid rgba(0, 210, 255, 0.3);
+            --finish-line-pattern: repeating-conic-gradient(#00d2ff 0% 25%, #d600ff 25% 50%) 50% / 20px 20px;
+            --track-shadow: 0 0 40px rgba(0, 210, 255, 0.2), inset 0 0 100px rgba(0,0,0,0.5);
+            --overlay-bg: rgba(20, 10, 30, 0.95);
+            --overlay-border: 4px solid #d600ff;
+            --overlay-text: #eee;
+            --input-border: 2px solid #d600ff;
+            --list-bg: rgba(0,0,0,0.4);
+            --btn-start-bg: linear-gradient(to bottom, #00d2ff, #0099cc);
+            --btn-start-text: #000;
+            --btn-stop-bg: linear-gradient(to bottom, #ff4757, #c0392b);
+            --btn-tourn-bg: linear-gradient(to bottom, #ff9966, #ff5e62);
+            --btn-settings-bg: linear-gradient(to bottom, #9b59b6, #8e44ad);
+            --btn-sounds-bg: linear-gradient(to bottom, #00c6ff, #0072ff);
+            --btn-manage-bg: linear-gradient(to bottom, #11998e, #38ef7d);
+        }
+
+        /* --- Layout & Design --- */
+        body {
+            font-family: 'Fredoka', 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg-body);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: var(--text-main);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+            transition: background-image 0.5s ease, color 0.3s ease;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 10px 20px;
+            background: var(--header-bg);
+            flex-shrink: 0;
+            z-index: 50;
+            box-shadow: var(--header-shadow);
+            backdrop-filter: blur(8px);
+            border-bottom: var(--header-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: auto;
+            min-height: 70px;
+            transition: all 0.3s ease;
+        }
+
+        body.fullscreen-mode header {
+            position: absolute; top: 0; left: 0; right: 0; height: 0; padding: 0; min-height: 0;
+            background: transparent; border: none; box-shadow: none; backdrop-filter: none;
+            pointer-events: none; overflow: visible;
+        }
+        
+        body.fullscreen-mode .main-controls, 
+        body.fullscreen-mode h1,
+        body.fullscreen-mode .credit-text { display: none !important; }
+
+        body.fullscreen-mode #fullscreen-btn {
+            pointer-events: auto; position: absolute; top: 20px; right: 20px;
+            background: rgba(255, 255, 255, 0.6); color: #333; border-color: rgba(255,255,255,0.8); margin: 0;
+        }
+        body.fullscreen-mode #race-track-container {
+            margin: 0; border-radius: 0; border: none; height: 100vh; width: 100vw; z-index: 1; 
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+        }
+
+        /* Titel */
+        h1 {
+            font-size: 2em; margin: 0; font-weight: 800; letter-spacing: 1px; 
+            color: var(--title-color); 
+            text-shadow: var(--title-shadow);
+            cursor: text; outline: none; min-width: 200px; text-align: center; flex-grow: 1; 
+            transition: all 0.5s ease;
+        }
+        h1:focus { border-bottom: 2px dashed rgba(198, 93, 5, 0.5); }
+
+        .main-controls { display: flex; gap: 15px; align-items: center; z-index: 51; }
+        .top-right-block { display: flex; flex-direction: column; align-items: center; margin-left: 15px; }
+
+        #fullscreen-btn {
+            background: linear-gradient(to bottom, #4facfe, #00f2fe);
+            width: 50px; height: 50px; border-radius: 50%;
+            font-size: 1.5em; padding: 0; border: 3px solid #fff;
+            pointer-events: auto;
+        }
+
+        .credit-text {
+            font-size: 0.65em; color: var(--text-main); font-weight: 700;
+            text-shadow: var(--text-shadow-credit); white-space: nowrap; margin-top: 2px;
+        }
+
+        /* --- Buttons --- */
+        button, .file-upload-label, .bg-upload-label, .duck-upload-label, .mini-upload-btn, .btn-delete, .sound-upload-label, .folder-upload-label, .prize-upload-label {
+            padding: 10px 20px; border-radius: 25px; border: none; font-size: 16px;
+            cursor: pointer; font-weight: 700; text-transform: uppercase; color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2), inset 0 -2px 5px rgba(0,0,0,0.2);
+            transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center;
+            font-family: 'Fredoka', sans-serif; text-shadow: 0 1px 2px rgba(0,0,0,0.3); white-space: nowrap;
+        }
+        button:hover, .file-upload-label:hover, .sound-upload-label:hover, .mini-upload-btn:hover, .btn-delete:hover, .folder-upload-label:hover, .prize-upload-label:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 6px 10px rgba(0,0,0,0.25); }
+        button:active { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        .btn-settings { background: var(--btn-settings-bg); font-size: 1.5em; padding: 10px 15px; }
+        .btn-sounds { background: var(--btn-sounds-bg); font-size: 1em; padding: 15px 20px; width: 100%; margin-bottom: 10px;}
+        .btn-manage { background: var(--btn-manage-bg); font-size: 1em; padding: 15px 20px; color: #333 !important; width: 100%; margin-bottom: 10px;}
+
+        .btn-start { background: var(--btn-start-bg); color: var(--btn-start-text); min-width: 100px; }
+        .btn-stop { background: var(--btn-stop-bg); color: #fff; min-width: 100px; }
+        .btn-tourn { background: var(--btn-tourn-bg); color: #fff; min-width: 100px; }
+        
+        .btn-add { background: linear-gradient(to bottom, #ffb347, #ffcc33); width: 100%; margin-top: 5px;}
+        .btn-shuffle { background: linear-gradient(to bottom, #a18cd1, #fbc2eb); width: 100%; }
+        .btn-theme { background: linear-gradient(to bottom, #34495e, #2c3e50); width: 100%; margin-top:10px; border: 1px solid #fff;}
+        .btn-clear { background: #e74c3c; width: 100%; margin-top: 15px; font-size: 0.9em;}
+        .btn-delete { background: var(--btn-delete-bg); width: 30px; height: 30px; padding: 0; font-size: 1em; margin-left: 5px; min-width: 30px;}
+
+        .file-upload-label, .bg-upload-label, .duck-upload-label, .folder-upload-label, .prize-upload-label { 
+            background: linear-gradient(to bottom, #4facfe, #00f2fe); 
+            width: 100%; margin-bottom: 8px; text-align: center; box-sizing: border-box;
+        }
+        .folder-upload-label { background: linear-gradient(to bottom, #11998e, #38ef7d); color: #000; }
+        .prize-upload-label { background: linear-gradient(to bottom, #FFD700, #ffaa00); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+        .sound-upload-label {
+            background: linear-gradient(to bottom, #7f8c8d, #95a5a6);
+            width: auto; padding: 5px 15px; font-size: 0.8em; margin-left: 10px;
+        }
+
+        /* --- SETTINGS MENU & OVERLAYS --- */
+        .overlay-card {
+            display: none; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--overlay-bg); padding: 25px;
+            color: var(--overlay-text);
+            border-radius: 20px; box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+            z-index: 2000; width: 400px; text-align: center; 
+            border: var(--overlay-border);
+            max-height: 90vh; overflow-y: auto;
+        }
+
+        /* GPMS OVERLAY */
+        #gpms-overlay {
+            display: none; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--overlay-bg); padding: 25px;
+            color: var(--overlay-text);
+            border-radius: 20px; box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+            z-index: 2100; width: 500px; text-align: center;
+            border: var(--overlay-border);
+            max-height: 90vh; overflow-y: auto;
+        }
+        
+        #settings-overlay {
+            display: none; position: absolute; top: 80px; left: 20px;
+            background: var(--overlay-bg); padding: 20px;
+            color: var(--overlay-text);
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 100; width: 320px; text-align: left; 
+            border: var(--overlay-border);
+            animation: slideDown 0.3s ease; max-height: 80vh; overflow-y: auto;
+            scrollbar-width: thin; scrollbar-color: #ff8c00 #eee;
+        }
+
+        /* Sound Overlay */
+        #sound-overlay {
+            display: none; position: absolute; top: 80px; left: 360px; /* Neben Settings */
+            background: var(--overlay-bg); padding: 20px;
+            color: var(--overlay-text);
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 100; width: 350px; text-align: left; 
+            border: var(--overlay-border);
+            animation: slideDown 0.3s ease; max-height: 80vh; overflow-y: auto;
+        }
+        @media (max-width: 800px) {
+            #sound-overlay { left: 20px; top: 100px; }
+        }
+
+        #settings-overlay::-webkit-scrollbar, #sound-overlay::-webkit-scrollbar, #gpms-overlay::-webkit-scrollbar { width: 8px; }
+        #settings-overlay::-webkit-scrollbar-track, #sound-overlay::-webkit-scrollbar-track, #gpms-overlay::-webkit-scrollbar-track { background: #eee; border-radius: 4px; }
+        #settings-overlay::-webkit-scrollbar-thumb, #sound-overlay::-webkit-scrollbar-thumb, #gpms-overlay::-webkit-scrollbar-thumb { background: #ff8c00; border-radius: 4px; }
+
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .settings-group { margin-bottom: 15px; border-bottom: 1px solid rgba(150,150,150,0.3); padding-bottom: 15px; }
+        .settings-group:last-child { border: none; margin: 0; padding: 0; }
+        .settings-label { font-weight: bold; color: var(--overlay-text); opacity: 0.8; display: block; margin-bottom: 8px; font-size: 1.1em; }
+
+        .sound-row {
+            display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+        }
+        .sound-name { font-weight: 600; font-size: 0.9em; width: 80px; }
+        .sound-controls { display: flex; align-items: center; gap: 5px; flex-grow: 1; }
+
+        input[type="text"], textarea { 
+            padding: 10px; border-radius: 15px; 
+            border: var(--input-border);
+            background: rgba(255,255,255,0.9);
+            width: 100%; box-sizing: border-box; font-family: 'Fredoka', sans-serif; font-weight: 600; outline: none;
+        }
+        input[type="text"]:focus, textarea:focus { border-color: #ff8c00; }
+        textarea { resize: vertical; min-height: 150px; }
+
+        input[type=range] { width: 100%; -webkit-appearance: none; height: 10px; background: #b3e0ff; border-radius: 5px; margin-top: 0; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #ff8c00; cursor: pointer; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        select {
+            padding: 10px; border-radius: 15px; border: var(--input-border); background: rgba(255,255,255,0.9); width: 100%;
+            font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1em; margin-bottom: 15px;
+        }
+        select:disabled { background: rgba(200,200,200,0.5); opacity: 0.6; cursor: not-allowed; }
+
+        /* --- Teilnehmer Liste & Toggle --- */
+        .participant-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-top: 15px; padding: 5px 0; user-select: none; }
+        .participant-header:hover { opacity: 0.8; }
+        .participant-header .settings-label { margin: 0; font-size: 0.9em; }
+        #p-list-toggle { font-weight: bold; font-size: 1.2em; color: var(--overlay-text); }
+        .participant-list { max-height: 150px; overflow-y: auto; border: 1px solid rgba(150,150,150,0.3); border-radius: 10px; padding: 5px; background: var(--list-bg); transition: all 0.3s ease; }
+        .participant-list.collapsed { max-height: 0; padding: 0; border: none; overflow: hidden; }
+        .participant-item { display: flex; align-items: center; justify-content: space-between; padding: 5px; border-bottom: 1px solid rgba(150,150,150,0.3); font-size: 0.9em; font-weight: 600; }
+        .participant-item:last-child { border-bottom: none; }
+        .p-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
+        .p-controls { display: flex; align-items: center; gap: 5px; }
+        .p-img-preview { width: 25px; height: 25px; border-radius: 5px; object-fit: contain; background: #ddd; }
+        .mini-upload-btn { font-size: 0.8em; padding: 4px 8px; width: auto; margin: 0; background: #ffcc00; }
+
+        /* =========================================
+           RACE TRACK 
+           ========================================= */
+        #race-track-container {
+            flex-grow: 1; position: relative; width: 96%; margin: 15px auto;
+            background-color: var(--track-bg-color); background-image: var(--track-texture);
+            background-size: 100px 100px, 100% 100%, 100% 100%, 100px 100px, 100px 100px;
+            box-shadow: var(--track-shadow); border-radius: 15px; border: 2px solid var(--track-border-color);
+            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); 
+            overflow: visible; 
+            transition: all 0.5s ease;
+            transform: perspective(1000px) rotateX(2deg); transform-origin: center bottom;
+        }
+
+        #race-track-container::before, #race-track-container::after { content: ""; position: absolute; left: 0; right: 0; height: 15px; background: var(--curb-pattern); z-index: 5; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        #race-track-container::before { top: 0; border-bottom: 2px solid rgba(0,0,0,0.3); }
+        #race-track-container::after { bottom: 0; border-top: 2px solid rgba(0,0,0,0.3); }
+
+        #lanes-container::before {
+            content: "START"; position: absolute; left: 20px; top: 15px; bottom: 15px; width: 40px;
+            border-right: 4px dotted rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center;
+            writing-mode: vertical-rl; text-orientation: upright; color: rgba(255,255,255,0.2);
+            font-weight: 900; font-size: 3em; letter-spacing: 10px; z-index: 0; pointer-events: none;
+        }
+
+        #lanes-container { position: relative; width: 100%; height: 100%; }
+        .finish-line {
+            /* Standard position (will be changed via JS in Finals) */
+            position: absolute; right: 80px; top: 0; bottom: 0; width: 40px; background: var(--finish-line-pattern);
+            z-index: 1; opacity: 0.9; box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+            border-left: 2px solid rgba(255,255,255,0.5); border-right: 2px solid rgba(255,255,255,0.5);
+            transition: right 0.5s ease; /* Smooth transition when moving */
+        }
+
+        /* --- PRIZE STYLES --- */
+        .track-prize {
+            position: absolute;
+            /* Positioned in the space created by moving finish line left in finals */
+            right: 15px; 
+            top: 50%;
+            transform: translateY(-50%);
+            /* Max width constrained to fit between edge and center of finish line */
+            max-width: 180px; 
+            width: auto;
+            font-size: 4.8em; 
+            z-index: 50; /* Over lines */
+            opacity: 1;
+            filter: drop-shadow(0 0 15px gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        .track-prize img {
+            max-width: 100%;
+            max-height: 250px;
+            object-fit: contain;
+        }
+
+        .winner-prize-large {
+            position: absolute;
+            bottom: 60px; 
+            right: -120px; 
+            font-size: 6em;
+            animation: zoomPrize 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            z-index: 100; /* Ganz oben */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .winner-prize-large img {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px gold);
+        }
+        @keyframes zoomPrize {
+            0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* --- Ducks --- */
+        .duck-lane { position: absolute; left: 0; width: 100%; height: auto; display: flex; align-items: center; transition: top 0.4s ease-in-out; border-bottom: var(--lane-line); }
+        .duck-lane:last-child { border-bottom: none; }
+        
+        .duck-wrapper { 
+            position: absolute; left: 10px; z-index: 10; display: flex; flex-direction: column; align-items: center; will-change: left, transform; 
+            /* Width and Height set by JS now */
+        }
+        
+        .duck-visual { width: 100%; height: 100%; display: flex; justify-content: center; align-items: flex-end; transition: transform 0.1s; }
+        .duck-emoji { line-height: 1; margin-bottom: -5px; filter: drop-shadow(0 5px 5px rgba(0,0,0, 0.6)); }
+        .custom-duck-img { object-fit: contain; filter: drop-shadow(0 5px 5px rgba(0,0,0, 0.6)); margin-bottom: 2px; }
+        
+        .duck-name {
+            font-size: 0.9em; font-family: 'Fredoka', sans-serif; background: rgba(255,255,255,0.95); color: #000;
+            padding: 2px 8px; border-radius: 4px; white-space: nowrap; position: absolute; top: -25%; left: 50%; transform: translateX(-50%);
+            border: 1px solid #333; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.4); z-index: 20; pointer-events: none;
+        }
+        .status-icon { font-size: 1.4em; position: absolute; top: -10%; right: -10%; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5)); z-index: 15; }
+        
+        .rank-badge {
+            position: absolute; top: 5%; left: 50%; transform: translateX(-50%);
+            background: #FFD700; color: #000; border: 2px solid #fff; font-weight: 900;
+            width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2em; z-index: 30; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            animation: popInBadge 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popInBadge { from { transform: translateX(-50%) scale(0); } to { transform: translateX(-50%) scale(1); } }
+
+        /* --- OBSTACLES --- */
+        .banana-peel { position: absolute; font-size: 2.5em; z-index: 5; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); animation: bananaWobble 2s infinite ease-in-out; }
+        .flying-banana { position: absolute; font-size: 2.5em; z-index: 1000; transition: top 0.8s ease-in-out, left 0.8s linear; pointer-events: none; filter: drop-shadow(0 15px 10px rgba(0,0,0,0.3)); }
+        @keyframes bananaWobble { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(10deg); } }
+        
+        .deco-item { font-size: 4em; position: absolute; z-index: 0; opacity: 0.8; filter: drop-shadow(0 0 15px #fff); pointer-events: none; transition: opacity 0.5s ease; }
+        .deco-light { display: block; } .deco-dark { display: none; }
+        [data-theme="dark"] .deco-light { display: none; }
+        [data-theme="dark"] .deco-dark { display: block; filter: drop-shadow(0 0 10px #d600ff); opacity: 0.6; }
+
+        /* --- WINNER OVERLAY --- */
+        #winner-display {
+            display: none; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); padding: 30px;
+            background: var(--overlay-bg); border: var(--overlay-border); color: var(--overlay-text);
+            border-radius: 40px; box-shadow: 0 10px 50px rgba(0,0,0,0.5), inset 0 0 60px rgba(255, 215, 0, 0.2);
+            z-index: 2000; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.5);
+            text-align: center; overflow: visible; min-width: 500px; 
+        }
+
+        #confetti-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2001; }
+        .winner-content { position: relative; z-index: 2002; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .close-btn {
+            position: absolute; top: 15px; right: 15px; background: #ff4757; color: white; border: none;
+            width: 40px; height: 40px; border-radius: 50%; font-size: 1.5em; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 2005; padding: 0;
+        }
+        .close-btn:hover { transform: scale(1.1); filter: brightness(1.1); }
+
+        /* PODIUM STYLES */
+        .podium-container {
+            display: flex; align-items: flex-end; justify-content: center; gap: 10px;
+            margin: 20px 0; min-height: 250px;
+        }
+        .podium-step {
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+            position: relative;
+        }
+        .podium-visual {
+            width: 100px; height: 100px; display: flex; justify-content: center; align-items: flex-end; margin-bottom: 5px;
+        }
+        .podium-visual .duck-emoji { font-size: 5em; }
+        .podium-visual .custom-duck-img { width: 80px; height: 80px; }
+        
+        .podium-box {
+            width: 120px; text-align: center; color: #fff; font-weight: bold; border-radius: 10px 10px 0 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.5); border-bottom: none;
+            display: flex; flex-direction: column; justify-content: flex-start; padding-top: 10px;
+        }
+        .podium-rank { font-size: 2em; line-height: 1; }
+        .podium-name { font-size: 0.9em; margin-top: 5px; padding: 0 5px; word-wrap: break-word;}
+
+        .step-1 .podium-box { height: 140px; background: linear-gradient(to bottom, #ffd700, #ffaa00); z-index: 3; }
+        .step-2 .podium-box { height: 100px; background: linear-gradient(to bottom, #c0c0c0, #909090); z-index: 2; }
+        .step-3 .podium-box { height: 70px; background: linear-gradient(to bottom, #cd7f32, #a05a2c); z-index: 1; }
+        .step-rest .podium-box { height: 50px; background: #666; opacity: 0.8; }
+        
+        .big-crown {
+            font-size: 4em; position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)); animation: floatCrown 2.5s ease-in-out infinite;
+        }
+
+        /* SOLO WINNER DISPLAY - FIXED */
+        .solo-winner-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-top: 60px; /* Space for crown */
+            animation: zoomInContent 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .huge-crown {
+            font-size: 5em; 
+            position: absolute; 
+            top: -70px; 
+            left: 50%; 
+            transform: translateX(-50%) rotate(-5deg);
+            z-index: 10;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
+            animation: floatCrown 3s ease-in-out infinite;
+        }
+        .winner-visual-large {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        /* Override size for Single Winner View */
+        .winner-visual-large img {
+            width: 200px !important; 
+            height: 200px !important;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+        }
+        .winner-visual-large .duck-emoji {
+            font-size: 10em !important;
+            line-height: 1;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+        }
+        
+        .solo-name {
+            font-size: 4em;
+            font-weight: 900;
+            color: #ffffff; /* Weisse Füllung */
+            /* -webkit-text-stroke: 2px #000;  REMOVED TO AVOID CUTTING LINES */
+            /* Using Text-Shadow for clean outline without internal intersections */
+            text-shadow: 
+                -2px -2px 0 #000, 
+                 2px -2px 0 #000, 
+                -2px  2px 0 #000, 
+                 2px  2px 0 #000, 
+                 4px 4px 0 #000, /* Hard Shadow */
+                 0 0 20px rgba(255, 215, 0, 0.8); /* Glow */
+            font-family: 'Fredoka', sans-serif;
+            margin-top: 15px;
+            letter-spacing: 2px;
+        }
+
+        /* COUNTDOWN OVERLAY */
+        #countdown-overlay {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 3000; align-items: center; justify-content: center;
+        }
+        #countdown-number {
+            font-size: 15em; font-weight: 900; color: #fff; text-shadow: 0 0 30px rgba(255,215,0,0.8);
+            animation: pulseCount 0.9s infinite;
+        }
+        @keyframes pulseCount { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 0; } }
+        /* popIn: for the Modal (includes translate to center it) */
+        @keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0;} 100% { transform: translate(-50%, -50%) scale(1); opacity: 1;} }
+        /* zoomInContent: for the content INSIDE the modal (no translate) */
+        @keyframes zoomInContent { 0% { transform: scale(0); opacity: 0;} 100% { transform: scale(1); opacity: 1;} }
+        @keyframes floatCrown { 0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); } 50% { transform: translateX(-50%) translateY(-15px) rotate(5deg); } }
+
+    </style>
+</head>
+<body data-theme="light">
+
+    <div class="deco-item deco-light" style="top: 5%; left: 2%;">☀️</div>
+    <div class="deco-item deco-light" style="top: 15%; right: 5%;">☁️</div>
+    <div class="deco-item deco-light" style="bottom: 15%; left: 10%;">🌴</div>
+    <div class="deco-item deco-light" style="bottom: 5%; right: 15%;">⛳</div>
+    <div class="deco-item deco-dark" style="top: 10%; left: 2%;">🍄</div>
+    <div class="deco-item deco-dark" style="top: 20%; right: 5%;">✨</div>
+    <div class="deco-item deco-dark" style="bottom: 10%; left: 15%;">⛳</div>
+    <div class="deco-item deco-dark" style="bottom: 20%; right: 10%;">🍄</div>
+
+    <div id="gpms-overlay">
+        <button class="close-btn" onclick="toggleGPMS()" style="top: 10px; right: 10px; width: 30px; height: 30px; font-size: 1em; background: #ccc;">✖</button>
+        <h2>👥 Teilnehmer Verwaltung</h2>
+        
+        <div class="settings-group">
+            <span class="settings-label">1. Neue Teilnehmer hinzufügen</span>
+            <div style="display:flex; gap:5px;">
+                <input type="text" id="gpms-input" placeholder="Name..." onkeypress="handleGPMSEnter(event)">
+                <button class="btn-add" onclick="gpmsAdd()" style="width: auto; margin:0;">➕</button>
+            </div>
+            
+             <label for="folderUpload" class="folder-upload-label" style="margin-top:10px;">📂 Bilder-Ordner verknüpfen (Auto-Match)</label>
+             <input type="file" id="folderUpload" webkitdirectory directory multiple style="display: none;" onchange="handleFolderUpload(this)">
+             <p style="font-size:0.7em; opacity:0.8; margin-top:2px;">Wähle deinen Ordner "Images". Dateien wie "Name.png" werden automatisch dem Spieler "Name" zugeordnet.</p>
+
+             <label for="fileUploadGPMS" class="file-upload-label" style="margin-top:5px;">📂 Namensliste (.txt)</label>
+             <input type="file" id="fileUploadGPMS" accept=".txt" style="display: none;" onchange="handleGPMSFileUpload(this)">
+             
+             <label for="duckUpload" class="duck-upload-label" title="Bilder für ALLE hochladen" style="margin-top:5px;">🦆 Massen-Bilder Upload</label>
+             <input type="file" id="duckUpload" accept="image/*" multiple style="display: none;" onchange="handleDuckUpload(this)">
+        </div>
+
+        <div class="settings-group">
+            <span class="settings-label">2. Globale Liste (<span id="gpms-count">0</span>)</span>
+            <div id="gpms-list" class="participant-list" style="max-height: 250px;"></div>
+        </div>
+
+        <div class="settings-group">
+            <span class="settings-label">3. Aktionen</span>
+            <button class="btn-start" onclick="applyParticipantsToAll()" style="width:100%; font-size:1.1em; margin-bottom:10px;">✅ Liste übernehmen</button>
+            <p style="font-size:0.7em; opacity:0.7; margin:0;">Aktualisiert Einzelrennen & bereitet Turnier vor.</p>
+            <button class="btn-clear" onclick="gpmsClearAll()" style="margin-top:10px;">🗑️ Liste leeren</button>
+        </div>
+    </div>
+
+    <div id="settings-overlay">
+        <button class="close-btn" onclick="toggleSettings()" style="top: 10px; right: 10px; width: 30px; height: 30px; font-size: 1em; background: #ccc;">✖</button>
+        
+        <div class="settings-group">
+            <button class="btn-manage" onclick="toggleGPMS()">👥 Teilnehmer Verwaltung</button>
+            <button class="btn-sounds" onclick="toggleSoundMenu()">🔊 Sound Board</button>
+        </div>
+        
+        <div class="settings-group">
+            <span class="settings-label">Uploads (Allgemein)</span>
+            <label for="bgUpload" class="bg-upload-label" title="Hintergrundbild ändern">🖼️ Hintergrund</label>
+            <input type="file" id="bgUpload" accept="image/*" style="display: none;" onchange="handleBgUpload(this)">
+            
+            <label for="prizeUpload" class="prize-upload-label" title="Turnier-Preis ändern" style="margin-top:5px;">🏆 Turnier-Preis Bild</label>
+            <input type="file" id="prizeUpload" accept="image/*" style="display: none;" onchange="handlePrizeUpload(this)">
+        </div>
+        
+        <div class="settings-group">
+            <span class="settings-label">Renn-Optionen</span>
+            <button class="btn-shuffle" onclick="shuffleDucks()">🔀 Teilnehmer mischen</button>
+            <button class="btn-theme" onclick="toggleTheme()">🌗 Design wechseln</button>
+            <div style="margin-top:15px; font-weight:bold; opacity: 0.8;">
+                ⏱️ Dauer: <span id="timeVal">30</span>s
+                <input type="range" id="durationSlider" min="5" max="300" value="30" oninput="updateTimeLabel()">
+            </div>
+        </div>
+        
+        <button class="btn-clear" onclick="resetAll()">🗑️ Alles zurücksetzen</button>
+    </div>
+
+    <div id="sound-overlay">
+        <button class="close-btn" onclick="toggleSoundMenu()" style="top: 10px; right: 10px; width: 30px; height: 30px; font-size: 1em; background: #ccc;">✖</button>
+        <h2 style="margin-top:0; font-size:1.4em;">🔊 Sound Board</h2>
+        <p style="font-size:0.8em; margin-bottom:15px; opacity:0.8;">Dateien werden aus ./Sounds/ geladen.</p>
+        
+        <div class="settings-group">
+            
+            <div class="sound-row">
+                <span class="sound-name">Musik</span>
+                <div class="sound-controls">
+                    <input type="range" min="0" max="1" step="0.1" value="0.5" oninput="soundManager.setVolume('music', this.value)">
+                    <label for="sound-upload-music" class="sound-upload-label">📁</label>
+                    <input type="file" id="sound-upload-music" accept="audio/*" style="display:none" onchange="soundManager.uploadSound('music', this)">
+                </div>
+            </div>
+
+            <div class="sound-row">
+                <span class="sound-name">Sieg/Jubel</span>
+                <div class="sound-controls">
+                    <input type="range" min="0" max="1" step="0.1" value="0.8" oninput="soundManager.setVolume('win', this.value)">
+                    <label for="sound-upload-win" class="sound-upload-label">📁</label>
+                    <input type="file" id="sound-upload-win" accept="audio/*" style="display:none" onchange="soundManager.uploadSound('win', this)">
+                </div>
+            </div>
+
+            <div class="sound-row">
+                <span class="sound-name">Effekt</span>
+                <div class="sound-controls">
+                    <input type="range" min="0" max="1" step="0.1" value="0.6" oninput="soundManager.setVolume('banana', this.value)">
+                    <label for="sound-upload-banana" class="sound-upload-label">📁</label>
+                    <input type="file" id="sound-upload-banana" accept="audio/*" style="display:none" onchange="soundManager.uploadSound('banana', this)">
+                </div>
+            </div>
+            
+             <div class="sound-row">
+                <span class="sound-name">Countd.</span>
+                <div class="sound-controls">
+                    <input type="range" min="0" max="1" step="0.1" value="0.6" oninput="soundManager.setVolume('count', this.value)">
+                    <label for="sound-upload-count" class="sound-upload-label">📁</label>
+                    <input type="file" id="sound-upload-count" accept="audio/*" style="display:none" onchange="soundManager.uploadSound('count', this)">
+                </div>
+            </div>
+
+            <div class="sound-row">
+                <span class="sound-name">Start!</span>
+                <div class="sound-controls">
+                    <input type="range" min="0" max="1" step="0.1" value="0.7" oninput="soundManager.setVolume('go', this.value)">
+                    <label for="sound-upload-go" class="sound-upload-label">📁</label>
+                    <input type="file" id="sound-upload-go" accept="audio/*" style="display:none" onchange="soundManager.uploadSound('go', this)">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="tournament-setup" class="overlay-card">
+        <button class="close-btn" onclick="closeTournamentSetup()" style="top: 10px; right: 10px; width: 30px; height: 30px; font-size: 1em; background: #ccc;">✖</button>
+        <h2>🏆 Turnier-Einstellungen</h2>
+
+        <div class="settings-group">
+            <span class="settings-label">Turnier-Struktur (Runden):</span>
+            <select id="tourn-rounds-count" onchange="toggleWinnerSelection()">
+                <option value="1">1 Runde (Einzelrennen)</option>
+                <option value="2">2 Runden (Halbfinale -> Finale)</option>
+                <option value="3">3 Runden (Viertel -> Halb -> Finale)</option>
+                <option value="4">4 Runden (Achtel -> Viertel -> Halb -> Finale)</option>
+            </select>
+        </div>
+        
+        <div class="settings-group">
+            <span class="settings-label">Gewinner pro Runde (die weiterkommen):</span>
+            <select id="tourn-winners-count">
+                <option value="2">2 Gewinner</option>
+                <option value="3">3 Gewinner</option>
+                <option value="4">4 Gewinner</option>
+                <option value="5">5 Gewinner</option>
+            </select>
+            <p id="tourn-hint" style="font-size:0.7em; opacity:0.7;">(Nur bei 1 Runde wählbar. Sonst: 50% kommen weiter)</p>
+        </div>
+
+        <button class="btn-start" onclick="setupTournamentFromGlobal()" style="width:100%;">Weiter ➡️</button>
+    </div>
+
+    <div id="tournament-review" class="overlay-card" style="max-height: 80vh; overflow-y:auto;">
+        <button class="close-btn" onclick="closeTournamentSetup()" style="top: 10px; right: 10px; width: 30px; height: 30px; font-size: 1em; background: #ccc;">✖</button>
+        <h2>🔍 Teilnehmer-Übersicht <span id="review-count" style="font-size:0.7em; opacity:0.8;">(0)</span></h2>
+        <p style="font-size:0.9em; margin-bottom:10px;">Hier kannst du Bilder zuweisen oder Teilnehmer entfernen, bevor es losgeht.</p>
+        
+        <div id="tourn-review-list" class="participant-list" style="max-height: 400px; margin-bottom:20px;"></div>
+        
+        <button class="btn-tourn" onclick="startTournamentFinal()" style="width:100%; font-size:1.2em;">🏆 Turnier Starten</button>
+    </div>
+
+    <div id="countdown-overlay">
+        <div id="countdown-number">3</div>
+    </div>
+
+    <header>
+        <div class="main-controls">
+            <button class="btn-settings" onclick="toggleSettings()" title="Einstellungen">⚙️</button>
+            <button class="btn-start" onclick="startRace()">START</button>
+            <button class="btn-tourn" onclick="openTournamentSetup()">TURNIER</button>
+            <button class="btn-stop" onclick="stopAndResetPositions()">STOP</button>
+        </div>
+
+        <h1 id="main-title" contenteditable="true" spellcheck="false">Walkabout Wunderland Race</h1>
+        
+        <div class="top-right-block">
+            <button id="fullscreen-btn" onclick="toggleFullscreen()" title="Vollbild Modus">⛶</button>
+            <div class="credit-text">designed by Mo</div>
+        </div>
+    </header>
+
+    <div id="race-track-container">
+        <div class="finish-line"></div>
+        <div id="lanes-container"></div>
+    </div>
+
+    <div id="winner-display">
+        <button class="close-btn" onclick="closeWinnerOverlay()">✖</button>
+        <canvas id="confetti-canvas"></canvas>
+        <div class="winner-content">
+            <h2 id="winner-title-text" style="margin:0 0 20px 0; color:var(--title-color); text-shadow:1px 1px 0 #000;">Gewinner!</h2>
+            
+            <div id="podium-area" class="podium-container">
+                </div>
+
+            <div id="winner-action-area">
+                <button class="btn-start" onclick="restartRace()" style="padding:10px 25px; font-size:1.2em;">Noch eine Runde!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lanesContainer = document.getElementById('lanes-container');
+        const trackContainer = document.getElementById('race-track-container');
+        const settingsOverlay = document.getElementById('settings-overlay');
+        const soundOverlay = document.getElementById('sound-overlay');
+        const gpmsOverlay = document.getElementById('gpms-overlay');
+        const countdownOverlay = document.getElementById('countdown-overlay');
+        const countdownNum = document.getElementById('countdown-number');
+        
+        let ducks = []; 
+        let activeBananas = []; 
+        let customDuckImages = []; 
+        
+        // GLOBAL IMAGE REGISTRY (Name -> DataURL)
+        let globalImageRegistry = {};
+        
+        // GLOBAL PRIZE IMAGE
+        let globalPrizeImage = null;
+
+        // GPMS STATE
+        let globalParticipantsList = [];
+
+        let raceInterval = null;
+        let isRacing = false;
+        
+        // --- NEW RESET FLAG ---
+        let isResetting = false;
+
+        // --- SOUND MANAGER CLASS ---
+        const soundManager = {
+            sounds: {
+                music:  { id:'music',  src: './Sounds/music.mp3', vol: 0.5, loop: true },
+                win:    { id:'win',    src: './Sounds/win.mp3',   vol: 0.8, loop: false },
+                banana: { id:'banana', src: './Sounds/slip.mp3',  vol: 0.6, loop: false },
+                count:  { id:'count',  src: './Sounds/count.mp3', vol: 0.6, loop: false },
+                go:     { id:'go',     src: './Sounds/go.mp3',    vol: 0.7, loop: false }
+            },
+            elements: {},
+
+            init() {
+                for (let key in this.sounds) {
+                    const conf = this.sounds[key];
+                    const audio = new Audio();
+                    audio.src = conf.src;
+                    audio.volume = conf.vol;
+                    audio.loop = conf.loop;
+                    audio.preload = 'auto'; 
+                    audio.onerror = () => console.warn(`Sound Error: Could not load ${conf.src}`);
+                    this.elements[key] = audio;
+                }
+            },
+
+            play(key) {
+                const el = this.elements[key];
+                if (!el) return;
+
+                if (key === 'music' || key === 'win') {
+                    el.currentTime = 0;
+                    el.play().catch(e => console.log("Play error:", e));
+                } else {
+                    try {
+                        const clone = el.cloneNode();
+                        clone.volume = this.sounds[key].vol;
+                        clone.play().catch(e => console.log("Play error:", e));
+                    } catch (err) {
+                         el.currentTime = 0;
+                         el.play().catch(e => console.log("Play error:", e));
+                    }
+                }
+            },
+
+            stop(key) {
+                const el = this.elements[key];
+                if (el) {
+                    el.pause();
+                    el.currentTime = 0;
+                }
+            },
+
+            setVolume(key, val) {
+                const conf = this.sounds[key];
+                const el = this.elements[key];
+                if (conf && el) {
+                    conf.vol = val;
+                    el.volume = val;
+                }
+            },
+
+            uploadSound(key, input) {
+                const file = input.files[0];
+                if (file) {
+                    const objectUrl = URL.createObjectURL(file);
+                    this.sounds[key].src = objectUrl;      
+                    const el = this.elements[key];
+                    el.src = objectUrl;   
+                    el.volume = this.sounds[key].vol;
+                }
+            }
+        };
+
+        soundManager.init();
+
+        // --- PERSISTENCE ---
+        function saveAppState() {
+            if(isResetting) return; // Prevent saving if we are about to reset!
+            const state = {
+                participants: globalParticipantsList,
+                images: globalImageRegistry,
+                prize: globalPrizeImage,
+                theme: document.body.getAttribute('data-theme'),
+                duration: document.getElementById('durationSlider').value,
+                bg: document.body.style.backgroundImage,
+                volumes: {
+                    music: soundManager.sounds.music.vol,
+                    win: soundManager.sounds.win.vol,
+                    banana: soundManager.sounds.banana.vol,
+                    count: soundManager.sounds.count.vol,
+                    go: soundManager.sounds.go.vol
+                }
+            };
+            try {
+                localStorage.setItem('wwr_save_v1', JSON.stringify(state));
+            } catch (e) {
+                console.log("Speicher voll, Bilder konnten evtl. nicht gesichert werden.");
+            }
+        }
+
+        function loadAppState() {
+            const stored = localStorage.getItem('wwr_save_v1');
+            if (stored) {
+                try {
+                    const state = JSON.parse(stored);
+                    if(state.participants) globalParticipantsList = state.participants;
+                    if(state.images) globalImageRegistry = state.images;
+                    if(state.prize) globalPrizeImage = state.prize;
+                    if(state.theme) document.body.setAttribute('data-theme', state.theme);
+                    if(state.duration) {
+                        document.getElementById('durationSlider').value = state.duration;
+                        updateTimeLabel();
+                    }
+                    if(state.bg) document.body.style.backgroundImage = state.bg;
+                    if(state.volumes) {
+                        for(let k in state.volumes) {
+                            soundManager.setVolume(k, state.volumes[k]);
+                        }
+                    }
+                } catch(e) { console.error("Ladefehler", e); }
+            }
+        }
+
+        window.addEventListener('beforeunload', saveAppState);
+        document.addEventListener('DOMContentLoaded', loadAppState);
+
+
+        // --- GPMS FUNCTIONS ---
+        function toggleGPMS() {
+            settingsOverlay.style.display = 'none';
+            soundOverlay.style.display = 'none';
+            gpmsOverlay.style.display = (gpmsOverlay.style.display === 'block') ? 'none' : 'block';
+            if(gpmsOverlay.style.display === 'block') renderGPMSList();
+        }
+
+        function handleGPMSEnter(e) { if(e.key === 'Enter') gpmsAdd(); }
+
+        function gpmsAdd() {
+            const input = document.getElementById('gpms-input');
+            const name = input.value.trim();
+            if(!name) return;
+            
+            if(globalParticipantsList.includes(name)) return;
+            
+            globalParticipantsList.push(name);
+            input.value = '';
+            renderGPMSList();
+        }
+
+        function gpmsRemove(index) {
+            globalParticipantsList.splice(index, 1);
+            renderGPMSList();
+        }
+
+        function renderGPMSList() {
+            const listEl = document.getElementById('gpms-list');
+            listEl.innerHTML = '';
+            document.getElementById('gpms-count').innerText = globalParticipantsList.length;
+
+            globalParticipantsList.forEach((name, index) => {
+                const item = document.createElement('div');
+                item.className = 'participant-item';
+                
+                let hasImg = globalImageRegistry[name];
+                let preview = hasImg ? `<img src="${hasImg}" class="p-img-preview">` : 
+                             `<div class="p-img-preview" style="display:flex;justify-content:center;align-items:center;">👤</div>`;
+
+                item.innerHTML = `
+                    <div style="display:flex;align-items:center;gap:5px;">${preview}<span class="p-name">${name}</span></div>
+                    <div class="p-controls">
+                        <label class="mini-upload-btn" title="Bild manuell setzen">📷 <input type="file" accept="image/*" style="display: none;" onchange="handleGPMSImageUpload('${name}', this)"></label>
+                        <button class="btn-delete" onclick="gpmsRemove(${index})">🗑️</button>
+                    </div>
+                `;
+                listEl.appendChild(item);
+            });
+        }
+
+        function handleGPMSImageUpload(name, input) {
+            const file = input.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    globalImageRegistry[name] = e.target.result;
+                    renderGPMSList();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleGPMSFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const lines = e.target.result.split(/\r?\n/);
+                lines.forEach(l => { 
+                    const name = l.trim();
+                    if (name && !globalParticipantsList.includes(name)) {
+                        globalParticipantsList.push(name);
+                    }
+                });
+                renderGPMSList();
+                input.value = ''; 
+            };
+            reader.readAsText(file);
+        }
+
+        function handleFolderUpload(input) {
+            const files = input.files;
+            if(files.length > 0) {
+                Array.from(files).forEach(file => {
+                    const fileName = file.name;
+                    const lastDot = fileName.lastIndexOf('.');
+                    if(lastDot === -1) return;
+                    
+                    const nameBase = fileName.substring(0, lastDot);
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        globalImageRegistry[nameBase] = e.target.result;
+                        if(gpmsOverlay.style.display === 'block') renderGPMSList();
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        function gpmsClearAll() {
+            if(confirm("Alle Teilnehmer aus der Liste löschen?")) {
+                globalParticipantsList = [];
+                renderGPMSList();
+            }
+        }
+
+        function applyParticipantsToAll() {
+            if(globalParticipantsList.length < 2) return;
+            
+            stopAndResetPositions();
+            ducks = [];
+            lanesContainer.innerHTML = '';
+            globalParticipantsList.forEach(name => {
+                createDuck(name);
+            });
+            
+            toggleGPMS();
+        }
+
+        // --- TOURNAMENT STATE ---
+        let tournamentMode = false;
+        let tournamentConfig = { winners: 1, rounds: 1 };
+        let tournamentState = {
+            active: false,
+            roundName: "",
+            roundIndex: 0, 
+            groups: [], 
+            currentGroupIndex: 0,
+            nextRoundPool: []
+        };
+        let tournamentCandidates = [];
+
+        const STATES = {
+            SLEEP: { minMult: 0, maxMult: 0, icon: '💤', prob: 0.05 },    
+            CRAWL: { minMult: 0.2, maxMult: 0.3, icon: '🐌', prob: 0.1 }, 
+            WALK:  { minMult: 0.9, maxMult: 1.1, icon: '', prob: 0.45 },   
+            RUN:   { minMult: 1.4, maxMult: 1.6, icon: '💨', prob: 0.3 },  
+            BOOST: { minMult: 2.8, maxMult: 3.2, icon: '🚀', prob: 0.1 }   
+        };
+        const EXPECTED_AVERAGE_MULT = 1.225; 
+
+        function toggleTheme() {
+            const body = document.body;
+            body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        }
+
+        function toggleSettings() {
+            soundOverlay.style.display = 'none';
+            gpmsOverlay.style.display = 'none';
+            settingsOverlay.style.display = (settingsOverlay.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function toggleSoundMenu() {
+            settingsOverlay.style.display = 'none';
+            gpmsOverlay.style.display = 'none';
+            soundOverlay.style.display = (soundOverlay.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function updateTimeLabel() {
+            document.getElementById('timeVal').innerText = document.getElementById('durationSlider').value;
+        }
+
+        function toggleFullscreen() {
+            document.body.classList.toggle('fullscreen-mode');
+            const btn = document.getElementById('fullscreen-btn');
+            if (document.body.classList.contains('fullscreen-mode')) {
+                btn.innerText = '✖';
+                settingsOverlay.style.display = 'none';
+                soundOverlay.style.display = 'none';
+                gpmsOverlay.style.display = 'none';
+            } else {
+                btn.innerText = '⛶';
+            }
+            setTimeout(adjustLayout, 550);
+        }
+
+        function toggleWinnerSelection() {
+            const rounds = parseInt(document.getElementById('tourn-rounds-count').value);
+            const winnerSelect = document.getElementById('tourn-winners-count');
+            const hint = document.getElementById('tourn-hint');
+            
+            if(rounds > 1) {
+                winnerSelect.disabled = true;
+                hint.innerText = "(Automatisch: Teilnehmer werden pro Runde halbiert, mind. 4 im Halbfinale)";
+            } else {
+                winnerSelect.disabled = false;
+                hint.innerText = "(Nur bei 1 Runde wählbar. Sonst: 50% kommen weiter)";
+            }
+        }
+
+        function openTournamentSetup() {
+            document.getElementById('tournament-setup').style.display = 'block';
+            document.getElementById('tournament-review').style.display = 'none';
+            settingsOverlay.style.display = 'none';
+            soundOverlay.style.display = 'none';
+            toggleWinnerSelection(); 
+        }
+
+        function closeTournamentSetup() {
+            document.getElementById('tournament-setup').style.display = 'none';
+            document.getElementById('tournament-review').style.display = 'none';
+        }
+
+        function createBalancedGroups(candidates, maxPerGroup) {
+            if (maxPerGroup === 0 || candidates.length <= maxPerGroup) {
+                return [candidates];
+            }
+            const total = candidates.length;
+            const numGroups = Math.ceil(total / maxPerGroup);
+            const groups = Array.from({ length: numGroups }, () => []);
+            candidates.forEach((cand, index) => {
+                groups[index % numGroups].push(cand);
+            });
+            return groups;
+        }
+
+        function setupTournamentFromGlobal() {
+            if (globalParticipantsList.length < 2) return;
+
+            tournamentCandidates = globalParticipantsList.map(name => ({ 
+                name: name, 
+                img: globalImageRegistry[name] || null 
+            }));
+
+            document.getElementById('tournament-setup').style.display = 'none';
+            document.getElementById('tournament-review').style.display = 'block';
+            
+            renderTournamentReviewList();
+        }
+
+        function renderTournamentReviewList() {
+            const listEl = document.getElementById('tourn-review-list');
+            listEl.innerHTML = '';
+            
+            document.getElementById('review-count').innerText = `(${tournamentCandidates.length})`;
+            
+            if(tournamentCandidates.length === 0) {
+                listEl.innerHTML = '<div style="opacity:0.7;font-size:0.8em;text-align:center;">Keine Teilnehmer</div>';
+                return;
+            }
+
+            tournamentCandidates.forEach((cand, index) => {
+                const item = document.createElement('div');
+                item.className = 'participant-item';
+                let preview = cand.img ? `<img src="${cand.img}" class="p-img-preview">` : 
+                             `<div class="p-img-preview" style="display:flex;justify-content:center;align-items:center;">🦆</div>`;
+                
+                item.innerHTML = `
+                    <div style="display:flex;align-items:center;gap:5px;">${preview}<span class="p-name">${cand.name}</span></div>
+                    <div class="p-controls">
+                        <label class="mini-upload-btn">📷 <input type="file" accept="image/*" style="display: none;" onchange="handleTournImageUpload(${index}, this)"></label>
+                        <button class="btn-delete" onclick="removeTournCandidate(${index})">🗑️</button>
+                    </div>
+                `;
+                listEl.appendChild(item);
+            });
+        }
+
+        function handleTournImageUpload(index, input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { 
+                    const result = e.target.result;
+                    tournamentCandidates[index].img = result; 
+                    globalImageRegistry[tournamentCandidates[index].name] = result;
+                    renderTournamentReviewList(); 
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeTournCandidate(index) {
+            tournamentCandidates.splice(index, 1);
+            renderTournamentReviewList();
+        }
+
+        function startTournamentFinal() {
+            if (tournamentCandidates.length < 2) return;
+
+            const winnersCount = parseInt(document.getElementById('tourn-winners-count').value);
+            const roundsCount = parseInt(document.getElementById('tourn-rounds-count').value);
+
+            tournamentMode = true;
+            tournamentConfig = { winners: winnersCount, rounds: roundsCount };
+            
+            let maxGroupSize = (roundsCount === 1) ? 0 : 20;
+
+            const groups = createBalancedGroups(tournamentCandidates, maxGroupSize);
+
+            tournamentState = {
+                active: true,
+                roundName: getRoundName(roundsCount), 
+                roundIndex: 0,
+                totalRounds: roundsCount,
+                groups: groups,
+                currentGroupIndex: 0,
+                nextRoundPool: []
+            };
+
+            closeTournamentSetup();
+            loadTournamentRace();
+        }
+
+        function getRoundName(roundsLeft) {
+            if (roundsLeft === 1) return "FINALE";
+            if (roundsLeft === 2) return "Halbfinale";
+            if (roundsLeft === 3) return "Viertelfinale";
+            if (roundsLeft === 4) return "Achtelfinale";
+            return "Runde " + roundsLeft;
+        }
+
+        function loadTournamentRace() {
+            stopAndResetPositions();
+            ducks = [];
+            lanesContainer.innerHTML = '';
+            
+            const currentGroup = tournamentState.groups[tournamentState.currentGroupIndex];
+            
+            const title = document.getElementById('main-title');
+            title.innerText = `${tournamentState.roundName} - Rennen ${tournamentState.currentGroupIndex + 1} von ${tournamentState.groups.length}`;
+
+            currentGroup.forEach(cand => createDuck(cand.name, cand.img));
+            
+            const finishLine = document.querySelector('.finish-line');
+            
+            // SHOW PRIZE IN FINALE & MOVE LINE
+            if (tournamentState.roundName === "FINALE") {
+                finishLine.style.right = '180px'; // Move line left
+                
+                const prize = document.createElement('div');
+                prize.className = 'track-prize';
+                prize.id = 'track-prize-element';
+                if (globalPrizeImage) {
+                    prize.innerHTML = `<img src="${globalPrizeImage}">`;
+                } else {
+                    prize.innerText = '🏆';
+                }
+                trackContainer.appendChild(prize);
+            } else {
+                finishLine.style.right = '80px'; // Reset line
+            }
+
+            runCountdownAndStart();
+        }
+
+        function runCountdownAndStart() {
+            countdownOverlay.style.display = 'flex';
+            let count = 3;
+            countdownNum.innerText = count;
+            soundManager.play('count'); 
+
+            let timer = setInterval(() => {
+                count--;
+                if(count > 0) { 
+                    countdownNum.innerText = count; 
+                    soundManager.play('count'); 
+                } else { 
+                    clearInterval(timer); 
+                    countdownOverlay.style.display = 'none'; 
+                    soundManager.play('go'); 
+                    startRaceInternal(); 
+                }
+            }, 1000);
+        }
+
+        function nextTournamentRace() {
+            closeWinnerOverlay();
+            
+            tournamentState.currentGroupIndex++;
+            if (tournamentState.currentGroupIndex < tournamentState.groups.length) {
+                loadTournamentRace();
+            } else {
+                const survivors = tournamentState.nextRoundPool;
+                const remainingRounds = tournamentState.totalRounds - (tournamentState.roundIndex + 1);
+
+                if (survivors.length <= 1 || remainingRounds <= 0) {
+                    document.getElementById('main-title').innerText = "Walkabout Wunderland Race";
+                    tournamentMode = false;
+                    return;
+                }
+
+                tournamentState.roundIndex++;
+                tournamentState.roundName = getRoundName(remainingRounds);
+                
+                let nextMaxGroup = (remainingRounds === 1) ? 0 : 20;
+                
+                const groups = createBalancedGroups(survivors, nextMaxGroup);
+
+                tournamentState.groups = groups;
+                tournamentState.currentGroupIndex = 0;
+                tournamentState.nextRoundPool = [];
+
+                loadTournamentRace();
+            }
+        }
+
+        function updateDuckVisual(duck) {
+            duck.visualEl.innerHTML = '';
+            let size = duck.element ? parseInt(duck.element.style.width) : 60;
+            if(!size) size = 60;
+
+            if (duck.customImg) {
+                const img = document.createElement('img'); img.src = duck.customImg; img.className = 'custom-duck-img';
+                img.style.width = (size * 0.9) + 'px'; img.style.height = (size * 0.9) + 'px';
+                duck.visualEl.appendChild(img); duck.facingScale = 1; duck.isCustom = true;
+            } else if (customDuckImages.length > 0) {
+                const imgUrl = customDuckImages[Math.floor(Math.random() * customDuckImages.length)];
+                const img = document.createElement('img'); img.src = imgUrl; img.className = 'custom-duck-img';
+                img.style.width = (size * 0.9) + 'px'; img.style.height = (size * 0.9) + 'px';
+                duck.visualEl.appendChild(img); duck.facingScale = 1; duck.isCustom = true;
+            } else {
+                const d = document.createElement('div'); d.className = 'duck-emoji'; d.innerText = '🦆'; d.style.filter = duck.filterStyle;
+                d.style.fontSize = (size * 0.6) + 'px';
+                duck.visualEl.appendChild(d); duck.facingScale = -1; duck.isCustom = false;
+            }
+            duck.visualEl.style.transform = `scaleX(${duck.facingScale})`;
+        }
+
+        function stopAndResetPositions() {
+            clearInterval(raceInterval);
+            isRacing = false;
+            
+            soundManager.stop('music');
+            soundManager.stop('win');
+
+            stopConfetti();
+            document.getElementById('winner-display').style.display = 'none';
+            activeBananas.forEach(b => b.el.remove()); activeBananas = [];
+            document.querySelectorAll('.flying-banana').forEach(el => el.remove());
+            
+            // Remove Track Prize if exists
+            const existingPrize = document.getElementById('track-prize-element');
+            if(existingPrize) existingPrize.remove();
+
+            ducks.forEach(d => {
+                d.position = 10; d.finished = false; d.rank = 0; d.currentSpeed = 0; d.targetSpeed = 0; d.stateTimer = 0; d.stunTimer = 0; 
+                d.element.style.left = '10px'; d.element.style.opacity = "1"; d.element.style.filter = "none";
+                d.statusEl.innerText = ""; d.visualEl.style.transform = `scaleX(${d.facingScale})`;
+                const existingBadge = d.element.querySelector('.rank-badge');
+                if(existingBadge) existingBadge.remove();
+            });
+        }
+
+        function closeWinnerOverlay() {
+            document.getElementById('winner-display').style.display = 'none';
+            stopConfetti();
+            soundManager.stop('win');
+        }
+
+        function adjustLayout() {
+            const count = ducks.length;
+            if (count === 0) return;
+
+            const containerHeight = trackContainer.clientHeight;
+            const usableHeight = containerHeight - 20; 
+            const marginTop = 10;
+
+            let laneHeight = usableHeight / count;
+            
+            const minSize = 60; 
+            const maxSize = 140; 
+
+            let size = Math.min(maxSize, Math.max(minSize, laneHeight - 10));
+
+            ducks.forEach((duck, index) => {
+                const topPos = marginTop + (index * laneHeight) + (laneHeight / 2) - (size / 2);
+
+                duck.laneElement.style.top = (marginTop + (index * laneHeight)) + 'px';
+                duck.laneElement.style.height = laneHeight + 'px';
+                duck.laneElement.style.zIndex = index + 10;
+
+                duck.element.style.width = size + 'px';
+                duck.element.style.height = size + 'px';
+                
+                duck.element.style.top = ((laneHeight - size) / 2) + 'px';
+
+                const img = duck.visualEl.querySelector('img');
+                if(img) {
+                    img.style.width = (size * 0.9) + 'px'; img.style.height = (size * 0.9) + 'px';
+                }
+                const emoji = duck.visualEl.querySelector('.duck-emoji');
+                if(emoji) {
+                    emoji.style.fontSize = (size * 0.6) + 'px';
+                }
+            });
+        }
+
+        window.addEventListener('resize', adjustLayout);
+
+        function createDuck(name, initialImg = null) {
+            const lane = document.createElement('div'); lane.className = 'duck-lane';
+            const wrapper = document.createElement('div'); wrapper.className = 'duck-wrapper'; wrapper.style.left = '10px';
+            const duckVisual = document.createElement('div'); duckVisual.className = 'duck-visual';
+            
+            let imgToUse = initialImg;
+            if(!imgToUse && globalImageRegistry[name]) {
+                imgToUse = globalImageRegistry[name];
+            }
+
+            const duck = {
+                laneElement: lane, element: wrapper, visualEl: duckVisual, statusEl: null, 
+                name: name, filterStyle: `hue-rotate(${Math.floor(Math.random() * 360)}deg) drop-shadow(0 3px 3px rgba(0,0,0,0.3))`, 
+                isCustom: false, customImg: imgToUse, facingScale: -1, position: 10, 
+                currentSpeed: 0, targetSpeed: 0, stateTimer: 0, stunTimer: 0, finished: false, rank: 0, wobble: Math.random() * 100
+            };
+            
+            wrapper.appendChild(duckVisual);
+            
+            const nameTag = document.createElement('div'); nameTag.className = 'duck-name'; nameTag.innerText = name;
+            const statusIcon = document.createElement('div'); statusIcon.className = 'status-icon'; duck.statusEl = statusIcon;
+            
+            wrapper.appendChild(statusIcon); wrapper.appendChild(nameTag);
+            lane.appendChild(wrapper); lanesContainer.appendChild(lane);
+            
+            wrapper.style.width = '60px'; 
+            updateDuckVisual(duck);
+
+            ducks.push(duck);
+            adjustLayout();
+        }
+
+        function handleBgUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => { document.body.style.backgroundImage = `url(${e.target.result})`; document.body.style.backgroundSize = "cover"; };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function handlePrizeUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => { globalPrizeImage = e.target.result; };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleDuckUpload(input) {
+            if (input.files.length > 0) {
+                customDuckImages = [];
+                Array.from(input.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = e => { customDuckImages.push(e.target.result); updateExistingDucksVisuals(); };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        function updateExistingDucksVisuals() {
+            setTimeout(() => { ducks.forEach(d => { if (!d.customImg) updateDuckVisual(d); }); }, 100);
+        }
+
+        function shuffleDucks() {
+            if (isRacing) return;
+            for (let i = ducks.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [ducks[i], ducks[j]] = [ducks[j], ducks[i]]; }
+            adjustLayout();
+        }
+
+        function throwBanana() {
+            if (ducks.length < 2) return;
+            const activeDucks = ducks.filter(d => !d.finished);
+            if (activeDucks.length < 2) return;
+            const source = activeDucks[Math.floor(Math.random() * activeDucks.length)];
+            const targets = activeDucks.filter(d => d !== source);
+            if (targets.length === 0) return;
+            const target = targets[Math.floor(Math.random() * targets.length)];
+
+            const trackWidth = trackContainer.offsetWidth;
+            const targetX = Math.max(10, Math.min(trackWidth - 130, target.position + 100 + Math.random()*100));
+            const startX = source.position + 30;
+            const startY = source.laneElement.offsetTop + parseInt(source.element.style.top);
+            const endY = target.laneElement.offsetTop + parseInt(target.element.style.top);
+
+            const flying = document.createElement('div');
+            flying.className = 'flying-banana'; flying.innerText = '🍌';
+            flying.style.left = startX + 'px'; flying.style.top = startY + 'px';
+            lanesContainer.appendChild(flying);
+            flying.offsetHeight; 
+            
+            flying.style.left = targetX + 'px'; flying.style.top = endY + 'px';
+            flying.style.transform = "rotate(720deg) scale(0.8)";
+
+            setTimeout(() => {
+                if(flying.parentNode) flying.remove();
+                if(!isRacing) return;
+                const peel = document.createElement('div'); peel.className = 'banana-peel'; peel.innerText = '🍌';
+                peel.style.left = (targetX - target.position) + 'px'; // Relative to wrapper? No absolute
+                peel.style.left = targetX + 'px';
+                // Attach to lane
+                target.laneElement.appendChild(peel);
+                // Center vertically in lane
+                peel.style.top = (parseInt(target.laneElement.style.height)/2 - 20) + 'px';
+                
+                activeBananas.push({ el: peel, lane: ducks.indexOf(target), pos: targetX });
+            }, 800);
+        }
+
+        function startRace() {
+            if(tournamentMode) return;
+            // Reset line for normal race
+            document.querySelector('.finish-line').style.right = '80px';
+            if (ducks.length < 2) return;
+            if (isRacing) return;
+            runCountdownAndStart();
+        }
+
+        function startRaceInternal() {
+            if (ducks.length < 2) { return; }
+            if (isRacing) return;
+
+            settingsOverlay.style.display = 'none';
+            soundOverlay.style.display = 'none';
+            gpmsOverlay.style.display = 'none';
+            document.getElementById('winner-display').style.display = 'none';
+            activeBananas.forEach(b => b.el.remove()); activeBananas = [];
+            document.querySelectorAll('.flying-banana').forEach(el => el.remove());
+
+            soundManager.play('music');
+            soundManager.stop('win');
+
+            const durationSec = parseInt(document.getElementById('durationSlider').value);
+            const baseRefWidth = 1000;
+            const baseSpeed = (baseRefWidth / (durationSec * 50)) / EXPECTED_AVERAGE_MULT; 
+
+            isRacing = true;
+            let finishedCount = 0;
+            let winnersNeeded = 1;
+            
+            if (tournamentMode) {
+                if (tournamentConfig.rounds === 1) {
+                    winnersNeeded = tournamentConfig.winners;
+                } else {
+                    const remainingRounds = tournamentState.totalRounds - tournamentState.roundIndex;
+                    let totalParticipantsInRound = 0;
+                    tournamentState.groups.forEach(g => totalParticipantsInRound += g.length);
+
+                    if (remainingRounds === 1) {
+                        winnersNeeded = 1;
+                    } else {
+                        // Standard: 50% advance
+                        let targetTotalNext = Math.ceil(totalParticipantsInRound / 2);
+
+                        // NEW LOGIC: At least 4 in Semi-Final
+                        if (remainingRounds === 3) targetTotalNext = Math.max(targetTotalNext, 4);
+                        
+                        // NEW LOGIC: At least 2 in Final
+                        if (remainingRounds === 2) targetTotalNext = Math.max(targetTotalNext, 2);
+
+                        // Cap target to total available
+                        targetTotalNext = Math.min(targetTotalNext, totalParticipantsInRound);
+
+                        // Calculate for specific group
+                        winnersNeeded = Math.ceil( (targetTotalNext / totalParticipantsInRound) * ducks.length );
+                        
+                        if(winnersNeeded < 1 && targetTotalNext > 0) winnersNeeded = 1;
+                    }
+                }
+            } else {
+                winnersNeeded = 1;
+            }
+            
+            raceInterval = setInterval(() => {
+                if (Math.random() < 0.003) throwBanana();
+
+                const trackWidth = trackContainer.offsetWidth;
+                
+                // Dynamic Target Pixel Calculation
+                const fLine = document.querySelector('.finish-line');
+                const currentRight = parseInt(fLine.style.right || getComputedStyle(fLine).right);
+                const targetPixel = trackWidth - (currentRight + 50);
+                
+                const widthScale = trackWidth / baseRefWidth;
+
+                let activeRacers = 0;
+
+                ducks.forEach((duck, index) => {
+                    if (duck.finished) return;
+                    activeRacers++;
+
+                    if (duck.stunTimer > 0) {
+                        duck.stunTimer--;
+                        duck.visualEl.style.transform = `scaleX(${duck.facingScale}) rotate(${duck.stunTimer * 20}deg)`;
+                        if (duck.stunTimer === 0) { duck.statusEl.innerText = ""; duck.visualEl.style.transform = `scaleX(${duck.facingScale})`; }
+                        return;
+                    }
+
+                    for (let b = 0; b < activeBananas.length; b++) {
+                        let ban = activeBananas[b];
+                        if (ban.lane === index && Math.abs(duck.position - ban.pos) < 30) {
+                            duck.stunTimer = 60; duck.statusEl.innerText = "😵‍💫";
+                            soundManager.play('banana');
+                            ban.el.remove(); activeBananas.splice(b, 1); b--;
+                        }
+                    }
+
+                    duck.stateTimer--;
+                    if (duck.stateTimer <= 0) pickNewState(duck, baseSpeed);
+
+                    const adjSpeed = duck.currentSpeed + (duck.targetSpeed - duck.currentSpeed) * 0.08;
+                    duck.currentSpeed = adjSpeed;
+                    duck.position += adjSpeed * widthScale;
+                    duck.element.style.left = duck.position + 'px';
+
+                    duck.wobble += 0.2 + (duck.currentSpeed * 0.2);
+                    const y = Math.sin(duck.wobble) * 3;
+                    const rot = -(duck.currentSpeed * 2);
+                    duck.visualEl.style.transform = `scaleX(${duck.facingScale}) translateY(${y}px) rotate(${rot}deg)`;
+
+                    if (duck.position >= targetPixel) {
+                        duck.finished = true;
+                        duck.position = targetPixel + 20;
+                        duck.element.style.left = duck.position + 'px';
+                        finishedCount++;
+                        duck.rank = finishedCount;
+                        
+                        const badge = document.createElement('div');
+                        badge.className = 'rank-badge';
+                        badge.innerText = duck.rank;
+                        duck.element.appendChild(badge);
+
+                        if (finishedCount >= winnersNeeded) {
+                            endRace(true);
+                        }
+                    }
+                });
+
+                if (activeRacers === 0 && isRacing) {
+                    endRace(true); 
+                }
+
+            }, 20);
+        }
+
+        function pickNewState(duck, baseSpeed) {
+            const trackWidth = trackContainer.offsetWidth;
+            const dist = (trackWidth - 130) - duck.position;
+            
+            if (dist < 150 && dist > 10 && Math.random() < 0.10) {
+                duck.targetSpeed = 0; duck.statusEl.innerText = "😱"; duck.stateTimer = 50 + Math.random() * 50; return;
+            }
+            
+            let leaderPos = 0; ducks.forEach(d => { if(d.position > leaderPos) leaderPos = d.position; });
+            if ((leaderPos - duck.position) > (trackWidth * 0.3) && Math.random() < 0.05) {
+                duck.targetSpeed = baseSpeed * 5.0; duck.statusEl.innerText = "🔥"; duck.stateTimer = 60; return;
+            }
+
+            const r = Math.random(); let acc = 0; let sel = STATES.WALK;
+            for (const k in STATES) { acc += STATES[k].prob; if (r <= acc) { sel = STATES[k]; break; } }
+            
+            duck.targetSpeed = baseSpeed * (sel.minMult + Math.random() * (sel.maxMult - sel.minMult));
+            duck.statusEl.innerText = sel.icon;
+            duck.stateTimer = 25 + Math.random() * 100;
+        }
+
+        // --- WINNER LOGIC ---
+
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const ctx = confettiCanvas.getContext('2d');
+        let confettiParticles = []; let confettiAnimationId = null;
+
+        function resizeCanvas() { const o = document.getElementById('winner-display'); confettiCanvas.width = o.clientWidth || 600; confettiCanvas.height = o.clientHeight || 400; }
+        function createConfetti() {
+            const c = ['#ffd700', '#ff8c00', '#4facfe', '#43e97b', '#ffffff', '#fa709a'];
+            for (let i = 0; i < 150; i++) confettiParticles.push({
+                x: Math.random() * confettiCanvas.width, y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+                color: c[Math.floor(Math.random() * c.length)], size: Math.random() * 8 + 4, speedY: Math.random() * 3 + 2,
+                speedX: Math.random() * 2 - 1, rotation: Math.random() * 360, rotationSpeed: Math.random() * 10 - 5
+            });
+        }
+        function animateConfetti() {
+            ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiParticles.forEach(p => {
+                p.y += p.speedY; p.x += p.speedX; p.rotation += p.rotationSpeed;
+                ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rotation * Math.PI / 180); ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size); ctx.restore();
+                if (p.y > confettiCanvas.height) { p.y = -10; p.x = Math.random() * confettiCanvas.width; }
+            });
+            confettiAnimationId = requestAnimationFrame(animateConfetti);
+        }
+        function startConfetti() { setTimeout(() => { resizeCanvas(); confettiParticles = []; createConfetti(); if (!confettiAnimationId) animateConfetti(); }, 50); }
+        function stopConfetti() { if (confettiAnimationId) cancelAnimationFrame(confettiAnimationId); confettiAnimationId = null; ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height); }
+
+        function endRace(showOverlay) {
+            clearInterval(raceInterval);
+            isRacing = false;
+            soundManager.stop('music');
+            soundManager.play('win');
+
+            if(showOverlay) {
+                showPodium();
+            }
+        }
+
+        function showPodium() {
+            const display = document.getElementById('winner-display');
+            const podiumArea = document.getElementById('podium-area');
+            const winnerTitle = document.getElementById('winner-title-text');
+            const actionArea = document.getElementById('winner-action-area');
+            
+            podiumArea.innerHTML = '';
+            display.style.display = 'block';
+            startConfetti();
+
+            const winners = ducks.filter(d => d.rank > 0).sort((a,b) => a.rank - b.rank);
+            
+            let isSingleWinnerMode = false;
+            
+            if (tournamentMode) {
+                let advancingCount = 0;
+                
+                const remainingRounds = tournamentState.totalRounds - tournamentState.roundIndex;
+                if (remainingRounds === 1) {
+                    advancingCount = 1;
+                    isSingleWinnerMode = true; // FINAL!
+                } else if (tournamentConfig.rounds === 1) {
+                    advancingCount = tournamentConfig.winners;
+                    if(advancingCount === 1) isSingleWinnerMode = true;
+                } else {
+                    // Logic to populate nextRoundPool - synced with startRaceInternal logic
+                    let totalParticipantsInRound = 0;
+                    tournamentState.groups.forEach(g => totalParticipantsInRound += g.length);
+
+                    let targetTotalNext = Math.ceil(totalParticipantsInRound / 2);
+
+                    // Mindestens 4 im Halbfinale (wenn noch 3 Runden: Viertel -> Halb -> Finale)
+                    if (remainingRounds === 3) targetTotalNext = Math.max(targetTotalNext, 4);
+
+                    // Mindestens 2 im Finale (wenn noch 2 Runden: Halb -> Finale)
+                    if (remainingRounds === 2) targetTotalNext = Math.max(targetTotalNext, 2);
+
+                    // Cap target to total available
+                    targetTotalNext = Math.min(targetTotalNext, totalParticipantsInRound);
+
+                    // Calculate proportion for THIS specific race/group
+                    advancingCount = Math.ceil( (targetTotalNext / totalParticipantsInRound) * ducks.length );
+                    
+                    if(advancingCount < 1 && targetTotalNext > 0) advancingCount = 1;
+                }
+
+                const advancers = winners.slice(0, advancingCount);
+                // Push Object {name, img} to next round pool!
+                advancers.forEach(d => tournamentState.nextRoundPool.push({name: d.name, img: d.customImg}));
+                
+                if (isSingleWinnerMode) winnerTitle.innerText = "CHAMPION!";
+                else winnerTitle.innerText = "Gewinner dieser Runde!";
+                
+                const btnText = (tournamentState.currentGroupIndex + 1 < tournamentState.groups.length) 
+                                ? "Nächstes Rennen starten" 
+                                : "Runde beenden / Nächste Runde";
+                
+                actionArea.innerHTML = `<button class="btn-tourn" onclick="nextTournamentRace()" style="padding:10px 25px; font-size:1.2em;">${btnText}</button>`;
+            } else {
+                // Normal Race
+                isSingleWinnerMode = true;
+                winnerTitle.innerText = "Rennen beendet!";
+                actionArea.innerHTML = `<button class="btn-start" onclick="restartRace()" style="padding:10px 25px; font-size:1.2em;">Noch eine Runde!</button>`;
+            }
+
+            // --- BUILD VIEW ---
+            if (isSingleWinnerMode && winners.length > 0) {
+                // HERO VIEW - FIXED
+                const winner = winners[0];
+                const heroContainer = document.createElement('div');
+                heroContainer.className = 'solo-winner-wrapper';
+                
+                const visualClone = document.createElement('div');
+                visualClone.className = 'duck-visual winner-visual-large';
+                visualClone.innerHTML = winner.visualEl.innerHTML;
+                visualClone.style.transform = `scaleX(${winner.facingScale})`;
+
+                // Apply custom styles manually if not handled by CSS class fully
+                if(winner.isCustom) {
+                    visualClone.firstChild.style.filter = "drop-shadow(0 10px 20px rgba(0,0,0,0.4))";
+                } else {
+                    const rawFilter = winner.filterStyle.split('drop-shadow')[0]; 
+                    visualClone.firstChild.style.filter = rawFilter + " drop-shadow(0 10px 20px rgba(0,0,0,0.4))";
+                }
+
+                heroContainer.innerHTML = `
+                    <div class="huge-crown">👑</div>
+                    ${visualClone.outerHTML}
+                    <div class="solo-name">${winner.name}</div>
+                `;
+
+                // --- SHOW PRIZE IN FINALE WINNER SCREEN ---
+                if(tournamentMode && tournamentState.roundName === "FINALE") {
+                    const prizeDiv = document.createElement('div');
+                    prizeDiv.className = 'winner-prize-large';
+                    if(globalPrizeImage) {
+                        prizeDiv.innerHTML = `<img src="${globalPrizeImage}">`;
+                    } else {
+                        prizeDiv.innerText = '🏆';
+                    }
+                    heroContainer.appendChild(prizeDiv);
+                }
+
+                podiumArea.appendChild(heroContainer);
+
+            } else {
+                // PODIUM VIEW
+                const count = winners.length;
+                let podiumOrder = [];
+                
+                if (count === 1) { podiumOrder = [winners[0]]; } 
+                else if (count === 2) { podiumOrder = [winners[1], winners[0]]; } 
+                else if (count === 3) { podiumOrder = [winners[1], winners[0], winners[2]]; } 
+                else if (count >= 4) { podiumOrder = [winners[1], winners[0], winners[2], ...winners.slice(3)]; } 
+                else { podiumOrder = winners; }
+
+                podiumOrder.forEach(duck => {
+                    if(!duck) return;
+                    const step = document.createElement('div');
+                    const rank = duck.rank;
+                    let stepClass = 'step-rest';
+                    if(rank === 1) stepClass = 'step-1';
+                    else if(rank === 2) stepClass = 'step-2';
+                    else if(rank === 3) stepClass = 'step-3';
+
+                    step.className = `podium-step ${stepClass}`;
+                    let crown = (rank === 1) ? '<div class="big-crown">👑</div>' : '';
+
+                    const visualClone = document.createElement('div');
+                    visualClone.className = 'podium-visual';
+                    visualClone.innerHTML = duck.visualEl.innerHTML;
+                    
+                    // Reset sizes for podium
+                    const emoji = visualClone.querySelector('.duck-emoji');
+                    if(emoji) emoji.style.fontSize = '5em';
+                    const img = visualClone.querySelector('img');
+                    if(img) { img.style.width = '80px'; img.style.height = '80px'; }
+
+                    if(duck.isCustom) {
+                        visualClone.firstChild.style.filter = "drop-shadow(0 5px 5px rgba(0,0,0,0.5))";
+                    } else {
+                        const rawFilter = duck.filterStyle.split('drop-shadow')[0]; 
+                        visualClone.firstChild.style.filter = rawFilter + " drop-shadow(0 5px 5px rgba(0,0,0,0.5))";
+                    }
+                    visualClone.style.transform = `scaleX(${duck.facingScale})`;
+
+                    step.innerHTML = `
+                        ${crown}
+                        <div style="transform: scaleX(${duck.facingScale})">${visualClone.outerHTML}</div>
+                        <div class="podium-box">
+                            <div class="podium-rank">${rank}.</div>
+                            <div class="podium-name">${duck.name}</div>
+                        </div>
+                    `;
+                    podiumArea.appendChild(step);
+                });
+            }
+
+            ducks.forEach(d => {
+                if(d.rank === 0) {
+                    d.element.style.opacity = "0.3";
+                    d.element.style.filter = "grayscale(1)";
+                }
+            });
+        }
+
+        function restartRace() {
+            stopAndResetPositions();
+            setTimeout(startRaceInternal, 500);
+        }
+
+        function resetAll(ask = true) {
+            if(ask && !confirm("Wirklich alles zurücksetzen (inkl. Bilder & Listen) und Seite neu laden?")) return;
+            
+            // 1. Set flag to prevent saveAppState
+            isResetting = true;
+            
+            // 2. Clear storage
+            localStorage.clear();
+            
+            // 3. Manually reset DOM elements immediately
+            document.body.style.backgroundImage = '';
+            document.body.removeAttribute('data-theme');
+            document.getElementById('durationSlider').value = 30;
+            
+            // 4. Reload
+            location.reload();
+        }
+    </script>
+</body>
+</html>
